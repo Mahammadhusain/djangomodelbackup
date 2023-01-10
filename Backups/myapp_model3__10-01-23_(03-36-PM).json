@@ -1,0 +1,9 @@
+[
+{
+   "model": "myapp.model3",
+   "pk": 2,
+   "fields": {
+      "name": "Rakesh"
+   }
+}
+]

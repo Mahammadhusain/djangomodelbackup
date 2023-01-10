@@ -6,6 +6,8 @@ from django.contrib import messages
 import os
 from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
+from .models import *
+
 # Create your views here.
 def BackupView(request):
     final_data_list =[{"app_name":app,"app_models":apps.all_models[app].keys()} for app in settings.INSTALLED_APPS if not app.startswith("django.")]
@@ -13,6 +15,8 @@ def BackupView(request):
     path = directory
     try:
       backup_list = os.listdir(path+"\Backups")
+      if len(backup_list) == 0:
+        backup_list = ['------- backups not found -------']
     except Exception as e:
       messages.error(request,f'File path not found !')
       print('Not found')
@@ -33,10 +37,15 @@ def BackupView(request):
         messages.success(request,f'({app_lbl}) | ({app_model}) Backup success')
         return redirect('/')
 
-
+    model1_data = Model1.objects.all()
+    model2_data = Model2.objects.all()
+    model3_data = Model3.objects.all()
     context = {
       'final_data_list':final_data_list,
       'backup_list':backup_list,
+      'model1_data':model1_data,
+      'model2_data':model2_data,
+      'model3_data':model3_data,
     }
     return render(request,'index.html',context)
 
@@ -50,10 +59,12 @@ def RestoreView(request):
       f_path = os.path.join(base_dir,'Backups',data_file)
       call_command("loaddata",f_path)
       messages.info(request,'Database restore success')
+      print(f_path)
       return redirect('/')
     except Exception as e:
       messages.error(request,f'File path not found !')
-      print('Not found')
+      # print('Not found')
+      print(str(e),"=========>")
       return redirect('/')
 
   context = {}
