@@ -17,19 +17,19 @@
     {% endfor %}
 
     {% csrf_token %}
-    <div class="row">
-      <div class="col-sm-12 col-lg-2">
-        <form action="{% url 'backup' %}" method="POST">
+    <div class="row container-fluid">
+      <div class="col-sm-12 col-lg-2 "  style="background-color:burlywood;">
+        <form  action="{% url 'backup' %}" method="POST">
           {% csrf_token %}
-          <label class="form-label" for="select1"><b>Select App</b></label>
+          <label class="form-label mt-5" for="select1"><b>Select App</b></label>
           <select class="form-select " name="select1" id="select1">
             {% for i in final_data_list %}
             <option value="{{i.app_name}}">{{i.app_name}}</option>
             {% endfor %}
           </select>
       </div>
-      <div class="col-sm-12 col-lg-2">
-        <label class="form-label" for="select1"><b>Select Model</b></label>
+      <div class="col-sm-12 col-lg-2 "style="background-color:burlywood;">
+        <label class="form-label mt-5" for="select1"><b>Select Model</b></label>
         <select class="form-select" name="select2" id="select2">
           {% for i in final_data_list %}
           {% for w in i.app_models %}
@@ -38,13 +38,13 @@
           {% endfor %}
         </select>
       </div>
-      <div class="col-sm-12 col-lg-2">
-        <button class="btn btn-success" style="margin-top: 30px; font-size: 20px;" type="submit"><strong><i
+      <div class="col-sm-12 col-lg-2 "style="background-color:burlywood;">
+        <button class="btn btn-success" style="margin-top: 80px; font-size: 20px;" type="submit"><strong><i
               class="bi bi-database-fill-up"></i> Backup Now</strong></button>
         </form>
       </div>
-      <div class="col-sm-12 col-lg-6" style="background-color: #e6ffee;">
-        <form action="{% url 'restore' %}" method="POST" class="mt-5">
+      <div class="col-sm-12 col-lg-6" style="background-color:cadetblue;">
+        <form action="{% url 'restore' %}" method="POST" class="p-5">
           {% csrf_token %}
           <div class="row">
             <div class="col-sm-12 col-lg-6">
