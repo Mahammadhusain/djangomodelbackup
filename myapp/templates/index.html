@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+
+<body>
+
+  <div class="container-fluid mt-5" >
+
+    {% for message in messages %}
+
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+      <strong>{{ message }}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    {% endfor %}
+
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-sm-12 col-lg-2" >
+          <label class="form-label" for="select1"><b>Select App</b></label>
+          <select class="form-select " name="select1" id="select1">
+            {% for i in final_data_list %}
+            <option value="{{i.app_name}}">{{i.app_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-sm-12 col-lg-2">
+          <label class="form-label" for="select1"><b>Select Model</b></label>
+          <select class="form-select" name="select2" id="select2">
+            {% for i in final_data_list %}
+            {% for w in i.app_models %}
+            <option extra-data="{{i.app_name}}" value="{{w}}">{{w}}</option>
+            {% endfor %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-sm-12 col-lg-2">
+          <button class="btn btn-success" style="margin-top: 30px; font-size: 20px;" type="submit"><strong><i
+                class="bi bi-database-fill-up"></i> Backup Now</strong></button>
+        </div>
+        <div class="col-sm-12 col-lg-6" style="background-color: #e6ffee;">
+          <form action="{% url 'restore' %}" method="POST" class="mt-5">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-sm-12 col-lg-6">
+                <label class="form-label" for="restore"><b>Select Backup file</b></label>
+                <select class="form-select " name="restore" id="restore">
+                  {% for i in backup_list %}
+                  <option value="{{i}}">{{i}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+      
+              <div class="col-sm-12 col-lg-6">
+                <button class="btn btn-warning" style="margin-top: 30px; font-size: 20px;" type="submit"><strong><i
+                      class="bi bi-database-fill-up"></i> Restore Now</strong></button>
+              </div>
+            </div>
+          </form>
+            
+        </div>
+      </div>
+      
+    </form>
+
+    
+    
+    
+
+
+
+  </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+  var $select1 = $('#select1'),
+    $select2 = $('#select2'),
+    $options = $select2.find('option');
+
+  $select1.on('change', function () {
+    $select2.html($options.filter('[extra-data="' + this.value + '"]'));
+  }).trigger('change');
+</script>
+
+{% endblock body %}
